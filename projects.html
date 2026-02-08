@@ -2,13 +2,289 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects | Drew Vranicar</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-right: 1px solid rgba(148, 163, 184, 0.1);
+      position: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 50px;
+      letter-spacing: -0.5px;
+    }
+
+    .sidebar a {
+      color: #94a3b8;
+      text-decoration: none;
+      padding: 14px 20px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 3px;
+      background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      background: rgba(59, 130, 246, 0.1);
+      color: #60a5fa;
+      transform: translateX(5px);
+    }
+
+    .sidebar a:hover::before {
+      transform: scaleY(1);
+    }
+
+    .sidebar a.active {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+    .sidebar a.active::before {
+      transform: scaleY(1);
+    }
+
+    /* Main Content */
+    .content {
+      margin-left: 280px;
+      flex: 1;
+      padding: 60px 80px;
+      max-width: 1400px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+    }
+
+    .content > p {
+      font-size: 1.15rem;
+      color: #94a3b8;
+      margin-bottom: 50px;
+      font-weight: 400;
+    }
+
+    /* Project Cards */
+    .card {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      border-radius: 16px;
+      padding: 35px;
+      margin-bottom: 30px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(96, 165, 250, 0.3);
+      background: rgba(30, 41, 59, 0.8);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 10px 20px rgba(59, 130, 246, 0.1);
+    }
+
+    .card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      color: #f1f5f9;
+      margin-bottom: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card p {
+      color: #94a3b8;
+      margin-bottom: 20px;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    .link {
+      display: inline-flex;
+      align-items: center;
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 500;
+      margin-right: 20px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .link:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: rgba(96, 165, 250, 0.4);
+      transform: translateX(3px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+
+    .link::after {
+      content: '→';
+      margin-left: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .link:hover::after {
+      transform: translateX(3px);
+    }
+
+    /* Status Badge */
+    .badge {
+      display: inline-block;
+      background: rgba(251, 191, 36, 0.15);
+      color: #fbbf24;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-left: 10px;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .content {
+        padding: 40px 50px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 30px 20px;
+        border-right: none;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .card {
+        padding: 25px;
+      }
+
+      .link {
+        display: flex;
+        margin-bottom: 10px;
+        margin-right: 0;
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Subtle Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      animation: fadeIn 0.6s ease-out backwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+  </style>
 </head>
 <body>
-
 <div class="container">
-
   <nav class="sidebar">
     <h2 class="logo">Drew</h2>
     <a href="index.html">Home</a>
@@ -16,54 +292,53 @@
     <a href="resume.html">Resume</a>
     <a href="about.html">About me</a>
   </nav>
-
   <main class="content">
     <h1>Projects</h1>
     <p>Selected projects with dashboards and repositories.</p>
-
+    
     <div class="card">
       <h3>Student Housing Matchmaker</h3>
       <p>
         Matches students to affordable housing based on price, location, and transit access.
+        Built with collaborative filtering algorithms to optimize housing recommendations.
       </p>
       <a class="link" href="https://github.com/cmart71/Student_Housing_Matchmaker" target="_blank">
-        GitHub →
-      </a>
-    </div>
-
-    <div class="card">
-      <h3>Data Visualization Dashboard on Chicago's Building Permits</h3>
-      <p>
-        Interactive visual analysis using Vega-Lite and D3.
-      </p>
-      <a class="link" href="https://drewvranicar.github.io/Chicago_Building_Permits/" target="_blank">
-        Dashboard →
-      </a>
-      </p>
-      <a class="link" href="https://github.com/DrewVranicar/Chicago_Building_Permits" target="_blank">
-        GitHub →
+        View on GitHub
       </a>
     </div>
     
     <div class="card">
-      <h3>Chicago Crimes Dashboard (IN PROGRESS)</h3>
+      <h3>Data Visualization Dashboard on Chicago's Building Permits</h3>
       <p>
-        Visualizes real-time crime data in Chicago and identifies valuable insights.
-    </p>
-      <a class="link" href="https://drewvranicar.github.io/ChicagoCrimes/" target="_blank">
-        Dashboard →
+        Interactive visual analysis using Vega-Lite and D3.js to explore patterns in Chicago's 
+        building permit data. Features dynamic filtering and real-time data visualization.
+      </p>
+      <a class="link" href="https://drewvranicar.github.io/Chicago_Building_Permits/" target="_blank">
+        View Dashboard
       </a>
-    </p>
-       <a class="link" href="https://github.com/DrewVranicar/ChicagoCrimes" target="_blank">
-        GitHub →
+      <a class="link" href="https://github.com/DrewVranicar/Chicago_Building_Permits" target="_blank">
+        View on GitHub
       </a>
     </div>
-
+    
+    <div class="card">
+      <h3>
+        Chicago Crimes Dashboard
+        <span class="badge">In Progress</span>
+      </h3>
+      <p>
+        Comprehensive analysis of Chicago crime data with automated monthly updates. 
+        Visualizes temporal patterns, crime types, and trends using 8M+ data points from 
+        the Chicago Data Portal. Features interactive time-series analysis and pattern detection.
+      </p>
+      <a class="link" href="https://drewvranicar.github.io/ChicagoCrimes/" target="_blank">
+        View Dashboard
+      </a>
+      <a class="link" href="https://github.com/DrewVranicar/ChicagoCrimes" target="_blank">
+        View on GitHub
+      </a>
+    </div>
   </main>
-
 </div>
-
 </body>
 </html>
-
-
