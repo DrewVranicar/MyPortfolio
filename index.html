@@ -2,37 +2,446 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Drew Vranicar | Portfolio</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-right: 1px solid rgba(148, 163, 184, 0.1);
+      position: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 50px;
+      letter-spacing: -0.5px;
+    }
+
+    .sidebar a {
+      color: #94a3b8;
+      text-decoration: none;
+      padding: 14px 20px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 3px;
+      background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      background: rgba(59, 130, 246, 0.1);
+      color: #60a5fa;
+      transform: translateX(5px);
+    }
+
+    .sidebar a:hover::before {
+      transform: scaleY(1);
+    }
+
+    .sidebar a.active {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+    .sidebar a.active::before {
+      transform: scaleY(1);
+    }
+
+    /* Main Content */
+    .content {
+      margin-left: 280px;
+      flex: 1;
+      padding: 0 80px;
+      max-width: 1400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* Hero Section */
+    .hero {
+      margin-bottom: 60px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    h1 {
+      font-size: 4.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -2px;
+      line-height: 1.1;
+    }
+
+    .hero > p {
+      font-size: 1.5rem;
+      color: #94a3b8;
+      margin-bottom: 40px;
+      font-weight: 400;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* Skills Tags */
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 50px;
+      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+
+    .skill-tag {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      color: #60a5fa;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .skill-tag:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: rgba(96, 165, 250, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Card */
+    .card {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fadeInUp 0.8s ease-out 0.4s backwards;
+      max-width: 800px;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(96, 165, 250, 0.3);
+      background: rgba(30, 41, 59, 0.8);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 10px 20px rgba(59, 130, 246, 0.1);
+    }
+
+    .card h3 {
+      font-size: 1.75rem;
+      color: #f1f5f9;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .card p {
+      color: #94a3b8;
+      line-height: 1.8;
+      font-size: 1.1rem;
+    }
+
+    /* CTA Buttons */
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      margin-top: 40px;
+      animation: fadeInUp 0.8s ease-out 0.6s backwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 30px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #60a5fa;
+      border-color: rgba(96, 165, 250, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(96, 165, 250, 0.5);
+      transform: translateY(-2px);
+    }
+
+    /* Animated Background Gradient */
+    .bg-gradient {
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+      animation: rotate 20s linear infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Stats Section */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 50px;
+      animation: fadeInUp 0.8s ease-out 0.8s backwards;
+    }
+
+    .stat-card {
+      background: rgba(30, 41, 59, 0.4);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      border-radius: 16px;
+      padding: 25px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      background: rgba(30, 41, 59, 0.6);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .content {
+        padding: 40px 50px;
+      }
+
+      h1 {
+        font-size: 3.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 30px 20px;
+        border-right: none;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 40px 20px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero > p {
+        font-size: 1.2rem;
+      }
+
+      .card {
+        padding: 30px;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-
+<div class="bg-gradient"></div>
 <div class="container">
-
   <nav class="sidebar">
-    <h2 class="logo">Drew</h2>
+    <h2 class="logo"></h2>
     <a href="index.html" class="active">Home</a>
     <a href="projects.html">Projects</a>
     <a href="resume.html">Resume</a>
     <a href="about.html">About me</a>
   </nav>
-
   <main class="content">
-    <h1>Hi, I'm Drew</h1>
-    <p>
-      Data Science student focused on analytics, visualization, and project-based problem solving.
-    </p>
+    <div class="hero">
+      <h1>Hi, I'm Drew Vranicar</h1>
+      <p>
+        Data Science student focused on analytics, visualization, and project-based problem solving.
+      </p>
+      
+      <div class="skills">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">R</span>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">C</span>
+        <span class="skill-tag">SAS</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">Data Visualization</span>
+        <span class="skill-tag">Machine Learning</span>
+        <span class="skill-tag">Statistical Analysis</span>
+      </div>
+
+      <div class="cta-buttons">
+        <a href="projects.html" class="btn btn-primary">
+          View Projects
+          <span>→</span>
+        </a>
+        <a href="about.html" class="btn btn-secondary">
+          Learn More
+        </a>
+      </div>
+    </div>
 
     <div class="card">
       <h3>What I Do</h3>
       <p>
-        I build data-driven projects using Python, R, SQL, and visualization tools.
-        This site showcases my work and live demos.
+        I build data-driven projects using Python, R, SQL, C++, C, JavaScript, and visualization tools.
+        This site showcases my work from interactive dashboards to 
+        machine learning applications. Each project demonstrates real-world problem 
+        solving through data science methodologies.
       </p>
     </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value">3+</div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">8M+</div>
+        <div class="stat-label">Data Points</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">100%</div>
+        <div class="stat-label">Passion</div>
+      </div>
+    </div>
   </main>
-
 </div>
-
 </body>
 </html>
